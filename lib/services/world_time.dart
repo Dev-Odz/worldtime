@@ -1,4 +1,4 @@
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
 
@@ -14,8 +14,17 @@ class WorldTime {
   Future<void> getTime() async {
     try {
       // make the request
-      Response response =
-          await get(Uri.parse('http://worldtimeapi.org/api/timezone/$url'));
+
+      var uri = Uri.https('worldtimeapi.org', '/api/timezone/$url');
+
+      // API REQUEST
+      var response = await http.get(
+        uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+      );
+
       Map data = jsonDecode(response.body);
 
       // get properties from json
